@@ -35,8 +35,7 @@ http://localhost:3000/api/guild?region=BD&guildID=YOUR_GUILD_ID
 ```
 
 ## 4. Connect the HTML
-async function fetchGuildByIdguildId {
-  const res = await fetch
+const res = await fetch
     "https://ff-guild-show.onrender.com/api/guild?region=BD&guildID=" +
     encodeURIComponentguildId
   
@@ -48,7 +47,6 @@ async function fetchGuildByIdguildId {
   const result = await res.json();
 
   return result.data;
-}
 ## Deploying
 
 Deploy this backend separately from a static Netlify frontend, for exampleonn a Node-compatible hosting provider. Then put the backend URL into the frontend.
