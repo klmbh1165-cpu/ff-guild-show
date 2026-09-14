@@ -35,10 +35,6 @@ http://localhost:3000/api/guild?region=BD&guildID=YOUR_GUILD_ID
 ```
 
 ## 4. Connect the HTML
-
-In the HTML `fetchGuildById()` function, call:
-
-```js
 const res = await fetch(
   "https://YOUR-BACKEND-DOMAIN.com/api/guild?region=BD&guildID=" +
   encodeURIComponent(guildId)
@@ -46,14 +42,7 @@ const res = await fetch(
 if (!res.ok) throw new Error("Guild not found");
 const result = await res.json();
 return normalizeApiData(result);
-```
 
-Important:
-- This uses an unofficial third-party Free Fire API.
-- It is not a Garena official API.
-- The upstream service can change, fail, rate-limit, or return incomplete data.
-- Do not put private API keys in the frontend.
-- Use only data and access methods that you are permitted to use.
 
 ## Deploying
 
