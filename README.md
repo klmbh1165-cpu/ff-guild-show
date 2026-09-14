@@ -36,10 +36,10 @@ http://localhost:3000/api/guild?region=BD&guildID=YOUR_GUILD_ID
 
 ## 4. Connect the HTML
 async function fetchGuildById(guildId) {
-  const res = await fetch(
+  const res = await fetch
     "https://ff-guild-show.onrender.com/api/guild?region=BD&guildID=" +
-    encodeURIComponent(guildId)
-  );
+    encodeURIComponentguildId
+  
 
   if (!res.ok) {
     throw new Error("Guild not found");
