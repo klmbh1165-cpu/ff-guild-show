@@ -42,12 +42,8 @@ const res = await fetch(
   "https://ff-guild-show.onrender.com/api/guild?region=BD&guildID=" +
   encodeURIComponent(guildId)
 );
-
 if (!res.ok) throw new Error("Guild not found");
-
 const result = await res.json();
-
-return result.data;
 
 ## Deploying
 
