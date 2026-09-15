@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Fire Guild Finder</title>
+  <meta name="description" content="Find Free Fire guild information using Guild ID.">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      min-height:100vh;
+      color:#fff;
+      background:
+        radial-gradient(circle at 20% 10%,rgba(255,122,0,.20),transparent 30%),
+        radial-gradient(circle at 85% 80%,rgba(255,0,72,.16),transparent 30%),
+        #08090d;
+    }
+    .wrap{width:min(1100px,92%);margin:auto}
+    header{padding:22px 0;text-align:center}
+    .logo{font-size:28px;font-weight:900;letter-spacing:1px}
+    .logo span{color:#ff7a00}
+    .hero{padding:55px 0 35px;text-align:center}
+    .badge{
+      display:inline-block;padding:8px 14px;border:1px solid #333;
+      border-radius:999px;background:#11131a;color:#ff9a45;font-size:13px;
+      margin-bottom:18px
+    }
+    h1{font-size:clamp(34px,8vw,64px);line-height:1.05}
+    h1 span{color:#ff7a00}
+    .sub{max-width:650px;margin:18px auto;color:#a9adb8;line-height:1.6}
+    .search{
+      display:flex;gap:10px;max-width:680px;margin:28px auto 0;
+      padding:8px;background:#11131a;border:1px solid #292d37;border-radius:18px;
+      box-shadow:0 15px 50px rgba(0,0,0,.35)
+    }
+    input{
+      flex:1;min-width:0;background:transparent;border:0;outline:0;
+      color:#fff;padding:15px;font-size:16px
+    }
+    button{
+      border:0;border-radius:12px;padding:0 25px;font-weight:800;
+      color:#fff;background:linear-gradient(135deg,#ff8a00,#ff3d00);
+      cursor:pointer
+    }
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .status{text-align:center;min-height:25px;margin:18px 0;color:#aaa}
+    .card{
+      display:none;background:#11131a;border:1px solid #292d37;border-radius:22px;
+      padding:25px;margin:20px auto 50px;max-width:900px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35)
+    }
+    .card.show{display:block}
+    .guild-head{display:flex;align-items:center;gap:18px;margin-bottom:25px}
+    .guild-icon{
+      width:80px;height:80px;border-radius:18px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#ff8a00,#ff3d00);font-size:32px;font-weight:900
+    }
+    .guild-head h2{font-size:28px}
+    .muted{color:#9297a4;margin-top:6px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .stat{
+      padding:18px;background:#0b0d12;border:1px solid #252934;border-radius:15px
+    }
+    .stat small{display:block;color:#7e8491;margin-bottom:8px}
+    .stat strong{font-size:20px}
+    footer{text-align:center;color:#666;padding:25px 0 40px;font-size:13px}
+    @media(max-width:650px){
+      .search{flex-direction:column;background:#11131a}
+      button{height:50px}
+      .grid{grid-template-columns:1fr 1fr}
+      .guild-head{align-items:flex-start}
+    }
+    @media(max-width:420px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap logo">FF <span>GUILD</span> FINDER</div>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <div class="badge">🇧🇩 Bangladesh Region • Live API</div>
+      <h1>Find Your <span>Guild</span></h1>
+      <p class="sub">Enter a Free Fire Guild ID to view guild information quickly.</p>
+
+      <div class="search">
+        <input id="guildId" type="text" inputmode="numeric" placeholder="Enter Guild ID..." autocomplete="off">
+        <button id="searchBtn" onclick="searchGuild()">Search Guild</button>
+      </div>
+      <div id="status" class="status"></div>
+    </section>
+
+    <section id="resultCard" class="card wrap">
+      <div class="guild-head">
+        <div class="guild-icon">FF</div>
+        <div>
+          <h2 id="guildName">Guild</h2>
+          <p class="muted">Guild ID: <span id="guildIdView">—</span></p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="stat"><small>Guild Level</small><strong id="level">—</strong></div>
+        <div class="stat"><small>Members</small><strong id="members">—</strong></div>
+        <div class="stat"><small>Region</small><strong id="region">BD</strong></div>
+        <div class="stat"><small>Leader</small><strong id="leader">—</strong></div>
+        <div class="stat"><small>Experience</small><strong id="exp">—</strong></div>
+        <div class="stat"><small>Status</small><strong id="guildStatus">Found</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 FF Guild Finder • Built for Free Fire players</footer>
+
+  <script>
+    const API_BASE = "https://ff-guild-show.onrender.com/api/guild?region=BD&guildID=";
+
+    document.getElementById("guildId").addEventListener("keydown", e => {
+      if (e.key === "Enter") searchGuild();
+    });
+
+    function pick(obj, keys, fallback = "—") {
+      for (const key of keys) {
+        if (obj && obj[key] !== undefined && obj[key] !== null && obj[key] !== "") {
+          return obj[key];
+        }
+      }
+      return fallback;
+    }
+
+    async function searchGuild() {
+      const input = document.getElementById("guildId");
+      const btn = document.getElementById("searchBtn");
+      const status = document.getElementById("status");
+      const card = document.getElementById("resultCard");
+      const guildId = input.value.trim();
+
+      if (!guildId) {
+        status.textContent = "Please enter a Guild ID.";
+        card.classList.remove("show");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Searching...";
+      status.textContent = "Loading guild data...";
+      card.classList.remove("show");
+
+      try {
+        const res = await fetch(API_BASE + encodeURIComponent(guildId));
+        if (!res.ok) throw new Error("Guild not found");
+
+        const result = await res.json();
+        const data = result.data || result;
+
+        document.getElementById("guildName").textContent =
+          pick(data, ["guildName","name","GuildName"], "Unknown Guild");
+
+        document.getElementById("guildIdView").textContent =
+          pick(data, ["guildID","guildId","id","GuildID"], guildId);
+
+        document.getElementById("level").textContent =
+          pick(data, ["guildLevel","level","GuildLevel"]);
+
+        document.getElementById("members").textContent =
+          pick(data, ["memberCount","members","MemberCount","memberNum"]);
+
+        document.getElementById("region").textContent =
+          pick(data, ["region","Region"], "BD");
+
+        document.getElementById("leader").textContent =
+          pick(data, ["leaderName","leader","LeaderName","ownerName"]);
+
+        document.getElementById("exp").textContent =
+          pick(data, ["experience","exp","guildExp","GuildExp"]);
+
+        document.getElementById("guildStatus").textContent = "Found";
+        status.textContent = "";
+        card.classList.add("show");
+      } catch (err) {
+        status.textContent = "Guild not found. Check the Guild ID and try again.";
+        card.classList.remove("show");
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Search Guild";
+      }
+    }
+  </script>
+</body>
+</html>
