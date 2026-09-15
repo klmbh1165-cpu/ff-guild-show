@@ -1,28 +1,3 @@
-const express = require("express");
-const cors = require("cors");
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(express.json());
-
-const API_BASE = "https://free-ff-api-src-5plp.onrender.com";
-
-function cleanRegion(value) {
-const region = String(value || "BD").trim().toUpperCase();
-
-const allowed = [
-"IND", "BR", "SG", "RU", "ID", "TW",
-"US", "VN", "TH", "ME", "PK", "CIS", "BD"
-];
-
-return allowed.includes(region) ? region : "BD";
-}
-
-app.get("/api/health", (req, res) => {
-res.json({
-ok: true,
 service: "FF Guild Backend"
 });
 });
@@ -81,3 +56,5 @@ details: error.message
 app.listen(PORT, () => {
 console.log("FF Guild backend running on port " + PORT);
 });
+
+
