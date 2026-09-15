@@ -1,60 +1,79 @@
-service: "FF Guild Backend"
-});
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+const PORT = process.env.PORT || 10000;
+
+const API_BASE =
+  process.env.FFDATA_API_URL ||
+  "https://free-ff-api.vercel.app";
+
+function cleanRegion(region) {
+  const value = String(region || "BD").trim().toUpperCase();
+  return value || "BD";
+}
+
+app.get("/", (req, res) => {
+  res.json({
+    service: "FF Guild Backend",
+    status: "online"
+  });
 });
 
 app.get("/api/guild", async (req, res) => {
-const guildID = String(req.query.guildID || "").trim();
-const region = cleanRegion(req.query.region);
+  const guildID = String(req.query.guildID || "").trim();
+  const region = cleanRegion(req.query.region);
 
-if (!guildID) {
-return res.status(400).json({
-error: "Guild ID is required"
-});
-}
+  if (!guildID) {
+    return res.status(400).json({
+      error: "Guild ID is required"
+    });
+  }
 
-try {
-const url =
-API_BASE +
-"/api/v1/guildInfo?region=" +
-encodeURIComponent(region) +
-"&guildID=" +
-encodeURIComponent(guildID);
+  try {
+    const url =
+      API_BASE +
+      "/api/v1/guildInfo?region=" +
+      encodeURIComponent(region) +
+      "&guildID=" +
+      encodeURIComponent(guildID);
 
-const response = await fetch(url);
-const text = await response.text();
+    const response = await fetch(url);
+    const text = await response.text();
 
-let data;
+    let data;
 
-try {
-  data = JSON.parse(text);
-} catch {
-  data = { raw: text };
-}
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
+    }
 
-if (!response.ok) {
-  return res.status(response.status).json({
-    error: "Upstream Free Fire API error",
-    details: data
-  });
-}
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: "Upstream Free Fire API error",
+        details: data
+      });
+    }
 
-res.json({
-  source: "free-ff-api",
-  region: region,
-  guildID: guildID,
-  data: data
-});
-
-} catch (error) {
-res.status(502).json({
-error: "Could not reach the upstream Free Fire API",
-details: error.message
-});
-}
+    return res.json({
+      source: "free-ff-api",
+      region: region,
+      guildID: guildID,
+      data: data
+    });
+  } catch (error) {
+    return res.status(502).json({
+      error: "Could not reach the upstream Free Fire API",
+      details: error.message
+    });
+  }
 });
 
 app.listen(PORT, () => {
-console.log("FF Guild backend running on port " + PORT);
+  console.log("FF Guild backend running on port " + PORT);
 });
-
-
