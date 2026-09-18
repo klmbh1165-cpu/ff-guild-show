@@ -8,131 +8,86 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
 
-const API_BASE =
+// ==========================================
+// API CONFIGURATION
+// ==========================================
+
+// Primary Free Fire Guild API
+const PRIMARY_API =
   process.env.FFDATA_API_URL ||
   "https://free-ff-api-src-5plp.onrender.com";
 
+// Fallback Guild API
+const FALLBACK_API =
+  "https://get-clan-info.vercel.app";
+
+// Supported Free Fire regions
+const SUPPORTED_REGIONS = [
+  "IND",
+  "BR",
+  "SG",
+  "RU",
+  "ID",
+  "TW",
+  "US",
+  "VN",
+  "TH",
+  "ME",
+  "PK",
+  "CIS",
+  "BD"
+];
+
+
+// ==========================================
+// REGION CLEANER
+// ==========================================
+
 function cleanRegion(region) {
-  const value = String(region || "BD").trim().toUpperCase();
+  const value = String(region || "BD")
+    .trim()
+    .toUpperCase();
 
-  const supported = [
-    "IND",
-    "BR",
-    "SG",
-    "RU",
-    "ID",
-    "TW",
-    "US",
-    "VN",
-    "TH",
-    "ME",
-    "PK",
-    "CIS",
-    "BD"
-  ];
+  if (SUPPORTED_REGIONS.includes(value)) {
+    return value;
+  }
 
-  return supported.includes(value) ? value : "BD";
+  return "BD";
 }
 
-app.get("/", (req, res) => {
-  res.json({
-    service: "FF Guild Backend",
-    status: "online",
-    api: API_BASE
-  });
-});
 
+// ==========================================
+// FETCH JSON WITH TIMEOUT
+// ==========================================
 
-app.get("/health", (req, res) => {
-  res.json({
-    status: "ok",
-    service: "FF Guild Backend"
-  });
-});
+async function fetchJSON(url, timeoutMs = 15000) {
 
+  const controller = new AbortController();
 
-app.get("/api/guild", async (req, res) => {
-
-  const guildID = String(
-    req.query.guildID || ""
-  ).trim();
-
-  const region = cleanRegion(
-    req.query.region
-  );
-
-
-  if (!guildID) {
-    return res.status(400).json({
-      error: "Guild ID is required"
-    });
-  }
-
-
-  if (!/^\d+$/.test(guildID)) {
-    return res.status(400).json({
-      error: "Guild ID must contain numbers only"
-    });
-  }
-
-
-  const url =
-    API_BASE +
-    "/api/v1/guildInfo" +
-    "?region=" +
-    encodeURIComponent(region) +
-    "&guildID=" +
-    encodeURIComponent(guildID);
-
-
-  console.log("=================================");
-  console.log("Guild request");
-  console.log("Region:", region);
-  console.log("Guild ID:", guildID);
-  console.log("URL:", url);
-  console.log("=================================");
-
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, timeoutMs);
 
   try {
 
-    const controller =
-      new AbortController();
+    const response = await fetch(url, {
+      method: "GET",
 
-    const timeout = setTimeout(
-      () => controller.abort(),
-      25000
-    );
+      headers: {
+        "Accept": "application/json",
+        "User-Agent": "FF-Guild-Show/1.0"
+      },
 
+      cache: "no-store",
 
-    let response;
-
-    try {
-
-      response = await fetch(url, {
-        method: "GET",
-
-        headers: {
-          "Accept": "application/json",
-          "User-Agent": "FF-Guild-Show/1.0"
-        },
-
-        cache: "no-store",
-
-        signal: controller.signal
-      });
-
-    } finally {
-
-      clearTimeout(timeout);
-
-    }
+      signal: controller.signal
+    });
 
 
-    const text =
-      await response.text();
-
+    const text = await response.text();
 
     let data;
+
 
     try {
 
@@ -143,146 +98,4 @@ app.get("/api/guild", async (req, res) => {
     } catch {
 
       data = {
-        raw: text
-      };
-
-    }
-
-
-    console.log(
-      "Upstream status:",
-      response.status
-    );
-
-
-    /*
-      Upstream API failed
-    */
-    if (!response.ok) {
-
-      console.error(
-        "Upstream API error:",
-        data
-      );
-
-
-      return res.status(502).json({
-
-        error:
-          "Upstream Free Fire API error",
-
-        upstreamStatus:
-          response.status,
-
-        message:
-          data?.message ||
-          data?.error ||
-          "The Free Fire API did not return a successful response.",
-
-        details: data,
-
-        region,
-
-        guildID
-
-      });
-
-    }
-
-
-    /*
-      Empty response
-    */
-    if (
-      !data ||
-      (
-        typeof data === "object" &&
-        Object.keys(data).length === 0
-      )
-    ) {
-
-      return res.status(502).json({
-
-        error:
-          "Free Fire API returned an empty response.",
-
-        region,
-
-        guildID
-
-      });
-
-    }
-
-
-    /*
-      Successful response
-    */
-    return res.json({
-
-      source:
-        "free-ff-api",
-
-      region,
-
-      guildID,
-
-      data
-
-    });
-
-
-  } catch (error) {
-
-    console.error(
-      "Backend error:",
-      error
-    );
-
-
-    if (error.name === "AbortError") {
-
-      return res.status(504).json({
-
-        error:
-          "Free Fire API timeout",
-
-        message:
-          "The upstream Free Fire API took too long to respond.",
-
-        region,
-
-        guildID
-
-      });
-
-    }
-
-
-    return res.status(502).json({
-
-      error:
-        "Could not reach the upstream Free Fire API",
-
-      message:
-        error.message,
-
-      region,
-
-      guildID
-
-    });
-
-  }
-
-});
-
-
-app.listen(PORT, () => {
-
-  console.log(
-    "FF Guild backend running on port " +
-    PORT
-  );
-
-});
+       
