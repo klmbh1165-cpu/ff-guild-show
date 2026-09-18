@@ -282,26 +282,155 @@ serverCards.forEach(card=>{
 regionInput.addEventListener("change",()=>selectServer(regionInput.value));
 
 function renderGuild(payload,searchedId){
-  const guild=payload?.data||payload?.guild||payload||{};
-  const name=first(guild,["guildName","name","GuildName"],"Unknown Guild");
-  const id=first(guild,["guildID","guildId","id","GuildID"],searchedId);
-  const level=first(guild,["level","guildLevel","GuildLevel"],"—");
-  const count=first(guild,["memberCount","membersCount","member_count","MemberCount"],membersOf(guild).length||"—");
-  const capacity=first(guild,["capacity","maxMembers","maxMember"],"—");
-  const desc=first(guild,["description","desc","GuildDescription"],"");
-  const icon=first(guild,["icon","iconUrl","logo","image"],"");
-  const members=membersOf(guild);
+  const guild = payload?.data || payload?.guild || payload || {};
 
-  const memberHtml=members.length
+  const name = first(
+    guild,
+    ["clanName","guildName","name","GuildName"],
+    "Unknown Guild"
+  );
+
+  const id = first(
+    guild,
+    ["clanId","guildID","guildId","id","GuildID"],
+    searchedId
+  );
+
+  const level = first(
+    guild,
+    ["clanLevel","guildLevel","level","GuildLevel"],
+    "—"
+  );
+
+  const count = first(
+    guild,
+    ["memberNum","memberCount","membersCount","member_count","MemberCount"],
+    "—"
+  );
+
+  const capacity = first(
+    guild,
+    ["capacity","maxMembers","maxMember"],
+    "—"
+  );
+
+  const desc = first(
+    guild,
+    ["slogan","description","desc","GuildDescription"],
+    ""
+  );
+
+  const icon = first(
+    guild,
+    ["icon","iconUrl","logo","image"],
+    ""
+  );
+
+  const members = membersOf(guild);
+
+  const memberHtml = members.length
     ? members.slice(0,50).map((m,i)=>{
-      const n=first(m,["name","nickname","playerName","Name"],"Unknown");
-      const uid=first(m,["uid","userId","playerId","id","UID"],"");
-      const role=first(m,["role","rank","position"],i===0?"Member":"");
-      return `<div class="member"><div><div class="mname">${escapeHtml(n)}</div>
-        <div class="meta">${uid?"UID: "+escapeHtml(uid):""}</div></div>
-        ${role?`<span class="badge">${escapeHtml(role)}</span>`:""}</div>`;
-    }).join("")
-    : `<div class="empty">No member list was returned by the API.</div>`;
+        const n = first(
+          m,
+          ["name","nickname","playerName","Name"],
+          "Unknown"
+        );
+
+        const uid = first(
+          m,
+          ["uid","userId","playerId","id","UID"],
+          ""
+        );
+
+        const role = first(
+          m,
+          ["role","rank","position"],
+          i === 0 ? "Member" : ""
+        );
+
+        return `
+          <div class="member">
+            <div>
+              <div class="mname">${escapeHtml(n)}</div>
+              <div class="meta">
+                ${uid ? "UID: " + escapeHtml(uid) : ""}
+              </div>
+            </div>
+
+            ${
+              role
+                ? `<span class="badge">${escapeHtml(role)}</span>`
+                : ""
+            }
+          </div>
+        `;
+      }).join("")
+    : `<div class="empty">Member list was not returned by the API.</div>`;
+
+  result.innerHTML = `
+    <div class="card">
+
+      <div class="guild-head">
+
+        <div class="guild-icon">
+          ${
+            icon
+              ? `<img src="${escapeHtml(icon)}"
+                      alt="Guild icon"
+                      onerror="this.style.display='none'">`
+              : "⚔️"
+          }
+        </div>
+
+        <div>
+          <div class="guild-name">
+            ${escapeHtml(name)}
+          </div>
+
+          <div class="guild-id">
+            Guild ID: ${escapeHtml(id)}
+          </div>
+        </div>
+
+        <div class="api-pill">
+          ● API CONNECTED
+        </div>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <small>GUILD LEVEL</small>
+          <b>${escapeHtml(level)}</b>
+        </div>
+
+        <div class="stat">
+          <small>MEMBERS</small>
+          <b>${number(count)}</b>
+        </div>
+
+        <div class="stat">
+          <small>CAPACITY</small>
+          <b>${number(capacity)}</b>
+        </div>
+
+      </div>
+
+      ${
+        desc
+          ? `<div class="desc">${escapeHtml(desc)}</div>`
+          : ""
+      }
+
+      <div class="members">
+        <h3>Guild Members</h3>
+        ${memberHtml}
+      </div>
+
+    </div>
+  `;
+}
 
   result.innerHTML=`
     <div class="card">
