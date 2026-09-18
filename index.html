@@ -9,227 +9,917 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 :root{
-  --bg:#06111b;--bg2:#091c2a;--panel:rgba(9,27,41,.78);
-  --panel2:rgba(13,37,55,.72);--line:rgba(132,220,255,.15);
-  --text:#effaff;--muted:#8ea8b8;--blue:#39c8ff;--cyan:#73e7ff;
-  --blue2:#167dff;--green:#49e5a2;--red:#ff7187;--gold:#ffd36b;
+  --bg:#06111b;
+  --bg2:#091c2a;
+  --panel:rgba(9,27,41,.78);
+  --panel2:rgba(13,37,55,.72);
+  --line:rgba(132,220,255,.15);
+  --text:#effaff;
+  --muted:#8ea8b8;
+  --blue:#39c8ff;
+  --cyan:#73e7ff;
+  --blue2:#167dff;
+  --green:#49e5a2;
+  --red:#ff7187;
+  --gold:#ffd36b;
 }
+
 html{scroll-behavior:smooth}
+
 body{
-  min-height:100vh;color:var(--text);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  min-height:100vh;
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,
+  BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:
    radial-gradient(circle at 8% 0%,rgba(34,183,255,.20),transparent 30%),
    radial-gradient(circle at 92% 8%,rgba(42,105,255,.16),transparent 28%),
    radial-gradient(circle at 50% 100%,rgba(0,205,190,.08),transparent 35%),
    linear-gradient(145deg,#04101a,#081827 52%,#06121d);
 }
+
 body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;opacity:.28;
-  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.28;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
   background-size:42px 42px;
 }
-.app{width:min(1080px,92%);margin:auto;padding:26px 0 55px;position:relative}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
-.brand{display:flex;align-items:center;gap:12px}
+
+.app{
+  width:min(1080px,92%);
+  margin:auto;
+  padding:26px 0 55px;
+  position:relative;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
 .brandmark{
-  width:45px;height:45px;border-radius:14px;display:grid;place-items:center;
-  position:relative;overflow:hidden;
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
   background:linear-gradient(145deg,#75eaff,#1d83ff 58%,#123fbe);
-  box-shadow:0 0 30px rgba(57,200,255,.25),inset 0 1px rgba(255,255,255,.65);
+  box-shadow:
+    0 0 30px rgba(57,200,255,.25),
+    inset 0 1px rgba(255,255,255,.65);
 }
-.brandmark:before{content:"";position:absolute;width:32px;height:32px;border:2px solid rgba(255,255,255,.65);border-radius:9px;transform:rotate(45deg)}
-.brandmark span{font-size:16px;font-weight:950;letter-spacing:-1px;z-index:1;text-shadow:0 2px 7px #126}
-.brandtext b{font-size:17px;letter-spacing:.2px}.brandtext small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;margin-top:2px}
+
+.brandmark:before{
+  content:"";
+  position:absolute;
+  width:32px;
+  height:32px;
+  border:2px solid rgba(255,255,255,.65);
+  border-radius:9px;
+  transform:rotate(45deg);
+}
+
+.brandmark span{
+  font-size:16px;
+  font-weight:950;
+  letter-spacing:-1px;
+  z-index:1;
+  text-shadow:0 2px 7px #126;
+}
+
+.brandtext b{font-size:17px;letter-spacing:.2px}
+
+.brandtext small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:2px;
+  margin-top:2px;
+}
+
 .live{
-  display:flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid var(--line);
-  border-radius:999px;background:rgba(14,40,57,.65);font-size:11px;color:#a9c4d3
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(14,40,57,.65);
+  font-size:11px;
+  color:#a9c4d3;
 }
-.live i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
-.hero{text-align:center;padding:20px 0 30px}
+
+.live i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+}
+
+.hero{
+  text-align:center;
+  padding:20px 0 30px;
+}
+
 .hero-logo{
-  width:100px;height:100px;margin:0 auto 18px;border-radius:29px;display:grid;place-items:center;
-  position:relative;background:linear-gradient(145deg,#9af2ff 0%,#36caff 34%,#1978ff 70%,#102e9d);
-  box-shadow:0 24px 70px rgba(26,160,255,.25),inset 0 2px 2px rgba(255,255,255,.7);
+  width:100px;
+  height:100px;
+  margin:0 auto 18px;
+  border-radius:29px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  background:linear-gradient(
+    145deg,
+    #9af2ff 0%,
+    #36caff 34%,
+    #1978ff 70%,
+    #102e9d
+  );
+  box-shadow:
+    0 24px 70px rgba(26,160,255,.25),
+    inset 0 2px 2px rgba(255,255,255,.7);
 }
-.hero-logo:before{content:"";position:absolute;inset:11px;border:1px solid rgba(255,255,255,.35);border-radius:23px}
-.hero-logo:after{content:"";position:absolute;width:52px;height:52px;border:2px solid rgba(255,255,255,.45);border-radius:15px;transform:rotate(45deg)}
-.hero-logo span{font-size:29px;font-weight:1000;letter-spacing:-2px;text-shadow:0 3px 12px #064b9b;z-index:2}
-h1{font-size:clamp(34px,8vw,62px);line-height:1;letter-spacing:-2.5px}
-.gradient{background:linear-gradient(90deg,#fff,#8feaff 42%,#5fa7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.subtitle{color:var(--muted);margin:12px auto 0;max-width:600px;font-size:14px;line-height:1.6}
+
+.hero-logo:before{
+  content:"";
+  position:absolute;
+  inset:11px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:23px;
+}
+
+.hero-logo:after{
+  content:"";
+  position:absolute;
+  width:52px;
+  height:52px;
+  border:2px solid rgba(255,255,255,.45);
+  border-radius:15px;
+  transform:rotate(45deg);
+}
+
+.hero-logo span{
+  font-size:29px;
+  font-weight:1000;
+  letter-spacing:-2px;
+  text-shadow:0 3px 12px #064b9b;
+  z-index:2;
+}
+
+h1{
+  font-size:clamp(34px,8vw,62px);
+  line-height:1;
+  letter-spacing:-2.5px;
+}
+
+.gradient{
+  background:linear-gradient(90deg,#fff,#8feaff 42%,#5fa7ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin:12px auto 0;
+  max-width:600px;
+  font-size:14px;
+  line-height:1.6;
+}
+
 .search-card{
-  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:27px;
-  padding:19px;background:linear-gradient(145deg,rgba(14,39,56,.92),rgba(6,20,31,.82));
-  box-shadow:0 25px 80px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.04);
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:27px;
+  padding:19px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(14,39,56,.92),
+      rgba(6,20,31,.82)
+    );
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.28),
+    inset 0 1px rgba(255,255,255,.04);
   backdrop-filter:blur(18px);
 }
-.search-card:before{content:"";position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.7}
-.search-label{font-size:12px;color:#9db7c7;margin:2px 4px 10px;letter-spacing:.5px}
-.search-row{display:grid;grid-template-columns:1fr 1.9fr auto;gap:10px}
-select,input,button{font:inherit;outline:none}
-.select-wrap{position:relative}
-select,input{
-  width:100%;height:56px;border-radius:17px;border:1px solid rgba(132,220,255,.13);
-  background:rgba(4,17,27,.78);color:var(--text);padding:0 16px;
+
+.search-card:before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:10%;
+  right:10%;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan),
+    transparent
+  );
+  opacity:.7;
 }
-select{cursor:pointer;appearance:none;padding-right:42px}
-.select-wrap:after{content:"⌄";position:absolute;right:16px;top:15px;color:var(--cyan);pointer-events:none}
-input::placeholder{color:#607b8c}
-input:focus,select:focus{border-color:rgba(83,216,255,.65);box-shadow:0 0 0 4px rgba(57,200,255,.08),0 0 25px rgba(57,200,255,.08)}
+
+.search-label{
+  font-size:12px;
+  color:#9db7c7;
+  margin:2px 4px 10px;
+  letter-spacing:.5px;
+}
+
+.search-row{
+  display:grid;
+  grid-template-columns:1fr 1.9fr auto;
+  gap:10px;
+}
+
+select,input,button{
+  font:inherit;
+  outline:none;
+}
+
+select,input{
+  width:100%;
+  height:56px;
+  border-radius:17px;
+  border:1px solid rgba(132,220,255,.13);
+  background:rgba(4,17,27,.78);
+  color:var(--text);
+  padding:0 16px;
+}
+
+select{
+  cursor:pointer;
+  appearance:none;
+  padding-right:42px;
+}
+
+.select-wrap{
+  position:relative;
+}
+
+.select-wrap:after{
+  content:"⌄";
+  position:absolute;
+  right:16px;
+  top:15px;
+  color:var(--cyan);
+  pointer-events:none;
+}
+
+input::placeholder{
+  color:#607b8c;
+}
+
+input:focus,
+select:focus{
+  border-color:rgba(83,216,255,.65);
+  box-shadow:
+    0 0 0 4px rgba(57,200,255,.08),
+    0 0 25px rgba(57,200,255,.08);
+}
+
 .search-btn{
-  height:56px;padding:0 25px;border:0;border-radius:17px;color:#00121c;font-weight:900;
-  cursor:pointer;min-width:150px;
-  background:linear-gradient(135deg,#b2f5ff,#52dcff 42%,#3b9cff);
-  box-shadow:0 12px 35px rgba(40,183,255,.22),inset 0 1px white;
+  height:56px;
+  padding:0 25px;
+  border:0;
+  border-radius:17px;
+  color:#00121c;
+  font-weight:900;
+  cursor:pointer;
+  min-width:150px;
+  background:
+    linear-gradient(
+      135deg,
+      #b2f5ff,
+      #52dcff 42%,
+      #3b9cff
+    );
+  box-shadow:
+    0 12px 35px rgba(40,183,255,.22),
+    inset 0 1px white;
   transition:.18s transform,.18s box-shadow;
 }
-.search-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(40,183,255,.32),inset 0 1px white}
-.search-btn:active{transform:scale(.97)}
-.search-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
-.hint{font-size:11px;color:#607b8c;margin:10px 4px 0}
-.server-section{margin-top:20px}
-.section-head{display:flex;justify-content:space-between;align-items:end;margin:0 2px 11px}
-.section-head h2{font-size:16px}.section-head span{font-size:11px;color:#607b8c}
-.servers{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+
+.search-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 16px 40px rgba(40,183,255,.32),
+    inset 0 1px white;
+}
+
+.search-btn:active{
+  transform:scale(.97);
+}
+
+.search-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.hint{
+  font-size:11px;
+  color:#607b8c;
+  margin:10px 4px 0;
+}
+
+.server-section{
+  margin-top:20px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin:0 2px 11px;
+}
+
+.section-head h2{
+  font-size:16px;
+}
+
+.section-head span{
+  font-size:11px;
+  color:#607b8c;
+}
+
+.servers{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:9px;
+}
+
 .server{
-  border:1px solid rgba(132,220,255,.12);background:rgba(7,25,38,.72);
-  border-radius:16px;padding:12px 8px;text-align:center;cursor:pointer;
-  color:#a5bfce;transition:.18s;user-select:none;position:relative;overflow:hidden;
+  border:1px solid rgba(132,220,255,.12);
+  background:rgba(7,25,38,.72);
+  border-radius:16px;
+  padding:12px 8px;
+  text-align:center;
+  cursor:pointer;
+  color:#a5bfce;
+  transition:.18s;
+  user-select:none;
+  position:relative;
+  overflow:hidden;
 }
-.server strong{display:block;color:#e8f9ff;font-size:14px;letter-spacing:.8px}
-.server small{font-size:9px;color:#637f8e;display:block;margin-top:3px}
-.server:hover{transform:translateY(-2px);border-color:rgba(86,219,255,.42);background:rgba(13,43,61,.9)}
+
+.server strong{
+  display:block;
+  color:#e8f9ff;
+  font-size:14px;
+  letter-spacing:.8px;
+}
+
+.server small{
+  font-size:9px;
+  color:#637f8e;
+  display:block;
+  margin-top:3px;
+}
+
+.server:hover{
+  transform:translateY(-2px);
+  border-color:rgba(86,219,255,.42);
+  background:rgba(13,43,61,.9);
+}
+
 .server.active{
-  border-color:rgba(88,222,255,.72);background:linear-gradient(145deg,rgba(33,104,137,.34),rgba(17,62,91,.42));
-  box-shadow:0 0 0 1px rgba(66,212,255,.12),0 10px 30px rgba(29,171,255,.12);
+  border-color:rgba(88,222,255,.72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(33,104,137,.34),
+      rgba(17,62,91,.42)
+    );
+  box-shadow:
+    0 0 0 1px rgba(66,212,255,.12),
+    0 10px 30px rgba(29,171,255,.12);
 }
-.server.active:after{content:"";position:absolute;left:18%;right:18%;bottom:0;height:2px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
-.status{display:none;margin-top:13px;padding:12px 14px;border-radius:14px;font-size:12px;background:rgba(4,17,27,.75);border:1px solid var(--line)}
-.status.show{display:block}.status.ok{color:#8affc9;border-color:rgba(73,229,162,.2)}.status.error{color:#ff9eaa;border-color:rgba(255,113,135,.22)}
-#result{margin-top:18px}
+
+.server.active:after{
+  content:"";
+  position:absolute;
+  left:18%;
+  right:18%;
+  bottom:0;
+  height:2px;
+  background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);
+}
+
+.status{
+  display:none;
+  margin-top:13px;
+  padding:12px 14px;
+  border-radius:14px;
+  font-size:12px;
+  background:rgba(4,17,27,.75);
+  border:1px solid var(--line);
+}
+
+.status.show{
+  display:block;
+}
+
+.status.ok{
+  color:#8affc9;
+  border-color:rgba(73,229,162,.2);
+}
+
+.status.error{
+  color:#ff9eaa;
+  border-color:rgba(255,113,135,.22);
+}
+
+#result{
+  margin-top:18px;
+}
+
 .card{
-  border:1px solid var(--line);border-radius:25px;padding:22px;
-  background:linear-gradient(145deg,rgba(12,36,53,.86),rgba(6,20,31,.84));
-  box-shadow:0 25px 70px rgba(0,0,0,.24);backdrop-filter:blur(18px)
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:22px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12,36,53,.86),
+      rgba(6,20,31,.84)
+    );
+  box-shadow:0 25px 70px rgba(0,0,0,.24);
+  backdrop-filter:blur(18px);
 }
-.empty{text-align:center;color:#7893a3;padding:38px 10px}
-.guild-head{display:flex;align-items:center;gap:15px}
+
+.empty{
+  text-align:center;
+  color:#7893a3;
+  padding:38px 10px;
+}
+
+.guild-head{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
 .guild-icon{
-  width:72px;height:72px;border-radius:20px;flex:0 0 auto;display:grid;place-items:center;
-  background:linear-gradient(145deg,#163e59,#0b2233);border:1px solid rgba(111,224,255,.2);overflow:hidden;font-size:29px
+  width:72px;
+  height:72px;
+  border-radius:20px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,#163e59,#0b2233);
+  border:1px solid rgba(111,224,255,.2);
+  overflow:hidden;
+  font-size:29px;
 }
-.guild-icon img{width:100%;height:100%;object-fit:cover}
-.guild-name{font-size:25px;font-weight:900;letter-spacing:-.6px;word-break:break-word}
-.guild-id{font-size:11px;color:#7591a1;margin-top:5px}
-.api-pill{margin-left:auto;padding:8px 10px;border-radius:999px;border:1px solid rgba(73,229,162,.18);color:#85e9bb;background:rgba(30,126,90,.08);font-size:10px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:19px}
-.stat{padding:16px;border-radius:17px;background:rgba(4,17,27,.46);border:1px solid rgba(132,220,255,.09)}
-.stat small{color:#718b9b;font-size:10px}.stat b{display:block;font-size:23px;margin-top:4px}
-.desc{margin-top:17px;color:#8ea9b8;font-size:13px;line-height:1.65}
-.members{margin-top:21px}.members h3{font-size:16px;margin-bottom:8px}
-.member{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px;border-bottom:1px solid rgba(132,220,255,.08)}
-.member:last-child{border-bottom:0}.mname{font-weight:750;font-size:13px}.meta{font-size:10px;color:#647f8f;margin-top:3px}
-.badge{font-size:9px;color:#9feeff;padding:5px 8px;border:1px solid rgba(95,216,255,.14);border-radius:8px;background:rgba(49,169,218,.08)}
-footer{text-align:center;color:#536d7c;font-size:10px;margin-top:25px}
-@media(max-width:760px){.servers{grid-template-columns:repeat(4,1fr)}.search-row{grid-template-columns:1fr 1.5fr}.search-btn{grid-column:1/-1;width:100%}}
+
+.guild-icon img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.guild-name{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-.6px;
+  word-break:break-word;
+}
+
+.guild-id{
+  font-size:11px;
+  color:#7591a1;
+  margin-top:5px;
+}
+
+.api-pill{
+  margin-left:auto;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(73,229,162,.18);
+  color:#85e9bb;
+  background:rgba(30,126,90,.08);
+  font-size:10px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:19px;
+}
+
+.stat{
+  padding:16px;
+  border-radius:17px;
+  background:rgba(4,17,27,.46);
+  border:1px solid rgba(132,220,255,.09);
+}
+
+.stat small{
+  color:#718b9b;
+  font-size:10px;
+}
+
+.stat b{
+  display:block;
+  font-size:23px;
+  margin-top:4px;
+}
+
+.desc{
+  margin-top:17px;
+  color:#8ea9b8;
+  font-size:13px;
+  line-height:1.65;
+}
+
+.members{
+  margin-top:21px;
+}
+
+.members h3{
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+.member{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 2px;
+  border-bottom:1px solid rgba(132,220,255,.08);
+}
+
+.member:last-child{
+  border-bottom:0;
+}
+
+.mname{
+  font-weight:750;
+  font-size:13px;
+}
+
+.meta{
+  font-size:10px;
+  color:#647f8f;
+  margin-top:3px;
+}
+
+.badge{
+  font-size:9px;
+  color:#9feeff;
+  padding:5px 8px;
+  border:1px solid rgba(95,216,255,.14);
+  border-radius:8px;
+  background:rgba(49,169,218,.08);
+}
+
+.retry-btn{
+  margin-top:15px;
+  padding:11px 18px;
+  border-radius:12px;
+  border:1px solid rgba(115,231,255,.25);
+  background:rgba(25,120,170,.12);
+  color:#a8efff;
+  cursor:pointer;
+}
+
+.retry-btn:hover{
+  background:rgba(25,120,170,.22);
+}
+
+footer{
+  text-align:center;
+  color:#536d7c;
+  font-size:10px;
+  margin-top:25px;
+}
+
+@media(max-width:760px){
+  .servers{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .search-row{
+    grid-template-columns:1fr 1.5fr;
+  }
+
+  .search-btn{
+    grid-column:1/-1;
+    width:100%;
+  }
+}
+
 @media(max-width:480px){
- .app{width:94%}.topbar{margin-bottom:12px}.live{display:none}.hero{padding-top:18px}
- .hero-logo{width:84px;height:84px;border-radius:25px}.hero-logo span{font-size:24px}
- h1{font-size:39px}.search-card{padding:14px;border-radius:22px}.search-row{grid-template-columns:1fr}
- .servers{grid-template-columns:repeat(3,1fr)}.server{padding:11px 5px}
- .guild-head{align-items:flex-start;flex-wrap:wrap}.api-pill{margin-left:0}.stats{grid-template-columns:1fr 1fr}
+  .app{
+    width:94%;
+  }
+
+  .topbar{
+    margin-bottom:12px;
+  }
+
+  .live{
+    display:none;
+  }
+
+  .hero{
+    padding-top:18px;
+  }
+
+  .hero-logo{
+    width:84px;
+    height:84px;
+    border-radius:25px;
+  }
+
+  .hero-logo span{
+    font-size:24px;
+  }
+
+  h1{
+    font-size:39px;
+  }
+
+  .search-card{
+    padding:14px;
+    border-radius:22px;
+  }
+
+  .search-row{
+    grid-template-columns:1fr;
+  }
+
+  .servers{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .server{
+    padding:11px 5px;
+  }
+
+  .guild-head{
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+
+  .api-pill{
+    margin-left:0;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
 }
-@media(max-width:350px){.servers{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:1fr}}
+
+@media(max-width:350px){
+  .servers{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brandmark"><span>FF</span></div>
-      <div class="brandtext"><b>FF Guild Show</b><small>GUILD INTELLIGENCE</small></div>
-    </div>
-    <div class="live"><i></i> API READY</div>
-  </header>
+<header class="topbar">
 
-  <section class="hero">
-    <div class="hero-logo"><span>FF</span></div>
-    <h1><span class="gradient">FF Guild Show</span></h1>
-    <p class="subtitle">Search a Free Fire guild and explore its information with a clean, modern guild dashboard.</p>
-  </section>
-
-  <section class="search-card">
-    <div class="search-label">GUILD SEARCH</div>
-
-    <form id="searchForm">
-      <div class="search-row">
-        <div class="select-wrap">
-          <select id="region" aria-label="Server">
-            <option value="BD">🇧🇩  BD — Bangladesh</option>
-            <option value="SN">🇸🇳  SN — Senegal</option>
-            <option value="US">🇺🇸  US — United States</option>
-            <option value="IND">🇮🇳  IND — India</option>
-            <option value="SG">🇸🇬  SG — Singapore</option>
-            <option value="ID">🇮🇩  ID — Indonesia</option>
-            <option value="TH">🇹🇭  TH — Thailand</option>
-            <option value="PK">🇵🇰  PK — Pakistan</option>
-            <option value="BR">🇧🇷  BR — Brazil</option>
-            <option value="ME">🌍  ME — Middle East</option>
-            <option value="EU">🇪🇺  EU — Europe</option>
-            <option value="CIS">🌐  CIS</option>
-          </select>
-        </div>
-
-        <input id="guildId" type="text" inputmode="numeric" autocomplete="off"
-               placeholder="Enter Guild ID  •  Example: 123456789" required>
-
-        <button class="search-btn" id="searchBtn" type="submit">Search Guild <span>→</span></button>
-      </div>
-    </form>
-
-    <div class="hint">Select a server below or use the server menu, enter your Guild ID, then search.</div>
-
-    <div class="server-section">
-      <div class="section-head">
-        <h2>Choose Server</h2>
-        <span id="selectedText">BD selected</span>
-      </div>
-
-      <div class="servers" id="servers">
-        <div class="server active" data-region="BD"><strong>.BD</strong><small>Bangladesh</small></div>
-        <div class="server" data-region="SN"><strong>.SN</strong><small>Senegal</small></div>
-        <div class="server" data-region="US"><strong>.US</strong><small>United States</small></div>
-        <div class="server" data-region="IND"><strong>.IND</strong><small>India</small></div>
-        <div class="server" data-region="SG"><strong>.SG</strong><small>Singapore</small></div>
-        <div class="server" data-region="ID"><strong>.ID</strong><small>Indonesia</small></div>
-        <div class="server" data-region="TH"><strong>.TH</strong><small>Thailand</small></div>
-        <div class="server" data-region="PK"><strong>.PK</strong><small>Pakistan</small></div>
-        <div class="server" data-region="BR"><strong>.BR</strong><small>Brazil</small></div>
-        <div class="server" data-region="ME"><strong>.ME</strong><small>Middle East</small></div>
-        <div class="server" data-region="EU"><strong>.EU</strong><small>Europe</small></div>
-        <div class="server" data-region="CIS"><strong>.CIS</strong><small>CIS</small></div>
-      </div>
+  <div class="brand">
+    <div class="brandmark">
+      <span>FF</span>
     </div>
 
-    <div id="status" class="status"></div>
-  </section>
+    <div class="brandtext">
+      <b>FF Guild Show</b>
+      <small>GUILD INTELLIGENCE</small>
+    </div>
+  </div>
 
-  <section id="result">
-    <div class="card empty">Select a server and enter a Guild ID to begin.</div>
-  </section>
+  <div class="live">
+    <i></i>
+    API READY
+  </div>
 
-  <footer>FF Guild Show • Premium Guild Search Interface</footer>
+</header>
+
+
+<section class="hero">
+
+  <div class="hero-logo">
+    <span>FF</span>
+  </div>
+
+  <h1>
+    <span class="gradient">FF Guild Show</span>
+  </h1>
+
+  <p class="subtitle">
+    Search a Free Fire guild and explore its information
+    with a clean, modern guild dashboard.
+  </p>
+
+</section>
+
+
+<section class="search-card">
+
+  <div class="search-label">
+    GUILD SEARCH
+  </div>
+
+  <form id="searchForm">
+
+    <div class="search-row">
+
+      <div class="select-wrap">
+
+        <select id="region" aria-label="Server">
+
+          <option value="BD">🇧🇩 BD — Bangladesh</option>
+          <option value="SN">🇸🇳 SN — Senegal</option>
+          <option value="US">🇺🇸 US — United States</option>
+          <option value="IND">🇮🇳 IND — India</option>
+          <option value="SG">🇸🇬 SG — Singapore</option>
+          <option value="ID">🇮🇩 ID — Indonesia</option>
+          <option value="TH">🇹🇭 TH — Thailand</option>
+          <option value="PK">🇵🇰 PK — Pakistan</option>
+          <option value="BR">🇧🇷 BR — Brazil</option>
+          <option value="ME">🌍 ME — Middle East</option>
+          <option value="EU">🇪🇺 EU — Europe</option>
+          <option value="CIS">🌐 CIS</option>
+
+        </select>
+
+      </div>
+
+      <input
+        id="guildId"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="Enter Guild ID • Example: 123456789"
+        required
+      >
+
+      <button
+        class="search-btn"
+        id="searchBtn"
+        type="submit"
+      >
+        Search Guild <span>→</span>
+      </button>
+
+    </div>
+
+  </form>
+
+
+  <div class="hint">
+    Select a server below or use the server menu,
+    enter your Guild ID, then search.
+  </div>
+
+
+  <div class="server-section">
+
+    <div class="section-head">
+
+      <h2>Choose Server</h2>
+
+      <span id="selectedText">
+        BD selected
+      </span>
+
+    </div>
+
+
+    <div class="servers" id="servers">
+
+      <div class="server active" data-region="BD">
+        <strong>.BD</strong>
+        <small>Bangladesh</small>
+      </div>
+
+      <div class="server" data-region="SN">
+        <strong>.SN</strong>
+        <small>Senegal</small>
+      </div>
+
+      <div class="server" data-region="US">
+        <strong>.US</strong>
+        <small>United States</small>
+      </div>
+
+      <div class="server" data-region="IND">
+        <strong>.IND</strong>
+        <small>India</small>
+      </div>
+
+      <div class="server" data-region="SG">
+        <strong>.SG</strong>
+        <small>Singapore</small>
+      </div>
+
+      <div class="server" data-region="ID">
+        <strong>.ID</strong>
+        <small>Indonesia</small>
+      </div>
+
+      <div class="server" data-region="TH">
+        <strong>.TH</strong>
+        <small>Thailand</small>
+      </div>
+
+      <div class="server" data-region="PK">
+        <strong>.PK</strong>
+        <small>Pakistan</small>
+      </div>
+
+      <div class="server" data-region="BR">
+        <strong>.BR</strong>
+        <small>Brazil</small>
+      </div>
+
+      <div class="server" data-region="ME">
+        <strong>.ME</strong>
+        <small>Middle East</small>
+      </div>
+
+      <div class="server" data-region="EU">
+        <strong>.EU</strong>
+        <small>Europe</small>
+      </div>
+
+      <div class="server" data-region="CIS">
+        <strong>.CIS</strong>
+        <small>CIS</small>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="status" class="status"></div>
+
+</section>
+
+
+<section id="result">
+
+  <div class="card empty">
+    Select a server and enter a Guild ID to begin.
+  </div>
+
+</section>
+
+
+<footer>
+  FF Guild Show • Premium Guild Search Interface
+</footer>
+
 </div>
+
 
 <script>
 "use strict";
 
+/*
+  IMPORTANT:
+  This must point to your Render backend.
+*/
 const API_BASE = "https://ff-guild-show.onrender.com";
+
 
 const form = document.getElementById("searchForm");
 const guildIdInput = document.getElementById("guildId");
@@ -238,151 +928,410 @@ const button = document.getElementById("searchBtn");
 const statusBox = document.getElementById("status");
 const result = document.getElementById("result");
 const selectedText = document.getElementById("selectedText");
-const serverCards = [...document.querySelectorAll(".server")];
+
+const serverCards = [
+  ...document.querySelectorAll(".server")
+];
+
 
 function setStatus(message,type=""){
-  statusBox.textContent=message;
-  statusBox.className="status show "+type;
+  statusBox.textContent = message;
+  statusBox.className = "status show " + type;
 }
-function clearStatus(){statusBox.className="status";statusBox.textContent=""}
+
+
+function clearStatus(){
+  statusBox.className = "status";
+  statusBox.textContent = "";
+}
+
 
 function escapeHtml(value){
+
   return String(value ?? "")
-   .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-   .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
 }
+
+
 function first(obj,keys,fallback=""){
-  for(const k of keys){
-    if(obj && obj[k]!==undefined && obj[k]!==null && obj[k]!=="") return obj[k];
+
+  for(const key of keys){
+
+    if(
+      obj &&
+      obj[key] !== undefined &&
+      obj[key] !== null &&
+      obj[key] !== ""
+    ){
+      return obj[key];
+    }
+
   }
+
   return fallback;
 }
-function number(v){
-  if(v===""||v===null||v===undefined) return "—";
-  const n=Number(v); return Number.isFinite(n)?n.toLocaleString():escapeHtml(v);
+
+
+function number(value){
+
+  if(
+    value === "" ||
+    value === null ||
+    value === undefined
+  ){
+    return "—";
+  }
+
+  const n = Number(value);
+
+  return Number.isFinite(n)
+    ? n.toLocaleString()
+    : escapeHtml(value);
 }
+
+
+/*
+  Supports several possible member-list names.
+*/
 function membersOf(guild){
-  const m=first(guild,["members","memberList","players"],[]);
-  return Array.isArray(m)?m:[];
+
+  const members = first(
+    guild,
+    [
+      "members",
+      "memberList",
+      "players",
+      "memberlist",
+      "Members"
+    ],
+    []
+  );
+
+  return Array.isArray(members)
+    ? members
+    : [];
+
 }
 
+
+/*
+  Select server.
+*/
 function selectServer(region){
-  regionInput.value=region;
-  serverCards.forEach(card=>card.classList.toggle("active",card.dataset.region===region));
-  const active=serverCards.find(x=>x.dataset.region===region);
-  selectedText.textContent=(active?.textContent.trim().split(/\s+/)[0]||region)+" selected";
+
+  regionInput.value = region;
+
+  serverCards.forEach(card => {
+
+    card.classList.toggle(
+      "active",
+      card.dataset.region === region
+    );
+
+  });
+
+  const active = serverCards.find(
+    card => card.dataset.region === region
+  );
+
+  selectedText.textContent =
+    (active?.textContent.trim().split(/\s+/)[0] || region)
+    + " selected";
+
 }
 
-serverCards.forEach(card=>{
-  card.addEventListener("click",()=>{
+
+/*
+  Server click.
+*/
+serverCards.forEach(card => {
+
+  card.addEventListener("click",() => {
+
     selectServer(card.dataset.region);
+
     guildIdInput.focus();
+
   });
+
 });
-regionInput.addEventListener("change",()=>selectServer(regionInput.value));
 
+
+regionInput.addEventListener(
+  "change",
+  () => selectServer(regionInput.value)
+);
+
+
+/*
+  Render guild result.
+*/
 function renderGuild(payload,searchedId){
-  const guild = payload?.data || payload?.guild || payload || {};
 
+  /*
+    Backend returns:
+
+    {
+      source,
+      region,
+      guildID,
+      data: {...}
+    }
+
+    So we support all common response structures.
+  */
+
+  const guild =
+    payload?.data?.data ||
+    payload?.data?.guild ||
+    payload?.data ||
+    payload?.guild ||
+    payload ||
+    {};
+
+
+  /*
+    Guild name
+  */
   const name = first(
     guild,
-    ["clanName","guildName","name","GuildName"],
+    [
+      "clanName",
+      "guildName",
+      "name",
+      "GuildName",
+      "ClanName"
+    ],
     "Unknown Guild"
   );
 
+
+  /*
+    Guild ID
+  */
   const id = first(
     guild,
-    ["clanId","guildID","guildId","id","GuildID"],
+    [
+      "clanId",
+      "clanID",
+      "guildID",
+      "guildId",
+      "id",
+      "GuildID",
+      "ClanID"
+    ],
     searchedId
   );
 
+
+  /*
+    Guild level
+  */
   const level = first(
     guild,
-    ["clanLevel","guildLevel","level","GuildLevel"],
+    [
+      "clanLevel",
+      "guildLevel",
+      "level",
+      "GuildLevel",
+      "ClanLevel"
+    ],
     "—"
   );
 
+
+  /*
+    Member count
+  */
   const count = first(
     guild,
-    ["memberNum","memberCount","membersCount","member_count","MemberCount"],
+    [
+      "memberNum",
+      "memberCount",
+      "membersCount",
+      "member_count",
+      "MemberCount",
+      "MemberNum"
+    ],
     "—"
   );
 
+
+  /*
+    Capacity
+  */
   const capacity = first(
     guild,
-    ["capacity","maxMembers","maxMember"],
+    [
+      "capacity",
+      "maxMembers",
+      "maxMember",
+      "maxMemberCount",
+      "Capacity"
+    ],
     "—"
   );
 
+
+  /*
+    Description / slogan
+  */
   const desc = first(
     guild,
-    ["slogan","description","desc","GuildDescription"],
+    [
+      "slogan",
+      "description",
+      "desc",
+      "GuildDescription",
+      "clanSlogan"
+    ],
     ""
   );
 
+
+  /*
+    Guild icon.
+  */
   const icon = first(
     guild,
-    ["icon","iconUrl","logo","image"],
+    [
+      "icon",
+      "iconUrl",
+      "logo",
+      "image",
+      "clanIcon",
+      "guildIcon"
+    ],
     ""
   );
 
+
+  /*
+    Members.
+  */
   const members = membersOf(guild);
 
+
   const memberHtml = members.length
-    ? members.slice(0,50).map((m,i)=>{
-        const n = first(
-          m,
-          ["name","nickname","playerName","Name"],
-          "Unknown"
-        );
 
-        const uid = first(
-          m,
-          ["uid","userId","playerId","id","UID"],
-          ""
-        );
+    ? members
+        .slice(0,50)
+        .map((member,index) => {
 
-        const role = first(
-          m,
-          ["role","rank","position"],
-          i === 0 ? "Member" : ""
-        );
+          const memberName = first(
+            member,
+            [
+              "name",
+              "nickname",
+              "playerName",
+              "Name",
+              "nickName"
+            ],
+            "Unknown"
+          );
 
-        return `
-          <div class="member">
-            <div>
-              <div class="mname">${escapeHtml(n)}</div>
-              <div class="meta">
-                ${uid ? "UID: " + escapeHtml(uid) : ""}
+
+          const uid = first(
+            member,
+            [
+              "uid",
+              "userId",
+              "playerId",
+              "id",
+              "UID"
+            ],
+            ""
+          );
+
+
+          const role = first(
+            member,
+            [
+              "role",
+              "rank",
+              "position"
+            ],
+            index === 0 ? "Member" : ""
+          );
+
+
+          return `
+            <div class="member">
+
+              <div>
+
+                <div class="mname">
+                  ${escapeHtml(memberName)}
+                </div>
+
+                <div class="meta">
+                  ${
+                    uid
+                      ? "UID: " + escapeHtml(uid)
+                      : ""
+                  }
+                </div>
+
               </div>
+
+              ${
+                role
+                  ? `
+                    <span class="badge">
+                      ${escapeHtml(role)}
+                    </span>
+                  `
+                  : ""
+              }
+
             </div>
+          `;
 
-            ${
-              role
-                ? `<span class="badge">${escapeHtml(role)}</span>`
-                : ""
-            }
-          </div>
-        `;
-      }).join("")
-    : `<div class="empty">Member list was not returned by the API.</div>`;
+        })
+        .join("")
 
+    : `
+      <div class="empty">
+        Member list was not returned by the API.
+      </div>
+    `;
+
+
+  /*
+    Display result.
+  */
   result.innerHTML = `
+
     <div class="card">
 
       <div class="guild-head">
 
         <div class="guild-icon">
+
           ${
             icon
-              ? `<img src="${escapeHtml(icon)}"
-                      alt="Guild icon"
-                      onerror="this.style.display='none'">`
+
+              ? `
+                <img
+                  src="${escapeHtml(icon)}"
+                  alt="Guild icon"
+                  onerror="this.style.display='none'"
+                >
+              `
+
               : "⚔️"
           }
+
         </div>
 
+
         <div>
+
           <div class="guild-name">
             ${escapeHtml(name)}
           </div>
@@ -390,13 +1339,16 @@ function renderGuild(payload,searchedId){
           <div class="guild-id">
             Guild ID: ${escapeHtml(id)}
           </div>
+
         </div>
+
 
         <div class="api-pill">
           ● API CONNECTED
         </div>
 
       </div>
+
 
       <div class="stats">
 
@@ -405,10 +1357,12 @@ function renderGuild(payload,searchedId){
           <b>${escapeHtml(level)}</b>
         </div>
 
+
         <div class="stat">
           <small>MEMBERS</small>
           <b>${number(count)}</b>
         </div>
+
 
         <div class="stat">
           <small>CAPACITY</small>
@@ -417,92 +1371,308 @@ function renderGuild(payload,searchedId){
 
       </div>
 
+
       ${
         desc
-          ? `<div class="desc">${escapeHtml(desc)}</div>`
+
+          ? `
+            <div class="desc">
+              ${escapeHtml(desc)}
+            </div>
+          `
+
           : ""
       }
 
+
       <div class="members">
-        <h3>Guild Members</h3>
+
+        <h3>
+          Guild Members
+        </h3>
+
         ${memberHtml}
+
       </div>
 
     </div>
+
   `;
+
 }
 
-  result.innerHTML=`
-    <div class="card">
-      <div class="guild-head">
-        <div class="guild-icon">
-          ${icon?`<img src="${escapeHtml(icon)}" alt="Guild icon" onerror="this.style.display='none'">`:"⚔️"}
-        </div>
-        <div>
-          <div class="guild-name">${escapeHtml(name)}</div>
-          <div class="guild-id">Guild ID: ${escapeHtml(id)}</div>
-        </div>
-        <div class="api-pill">● API CONNECTED</div>
-      </div>
 
-      <div class="stats">
-        <div class="stat"><small>GUILD LEVEL</small><b>${escapeHtml(level)}</b></div>
-        <div class="stat"><small>MEMBERS</small><b>${number(count)}</b></div>
-        <div class="stat"><small>CAPACITY</small><b>${number(capacity)}</b></div>
-      </div>
-
-      ${desc?`<div class="desc">${escapeHtml(desc)}</div>`:""}
-
-      <div class="members">
-        <h3>Guild Members</h3>
-        ${memberHtml}
-      </div>
-    </div>`;
-}
-
+/*
+  Call Render backend.
+*/
 async function searchGuild(guildId,region){
-  const url=API_BASE+"/api/guild?region="+encodeURIComponent(region)+"&guildID="+encodeURIComponent(guildId);
-  const response=await fetch(url,{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});
-  let payload=null;
-  try{payload=await response.json()}catch(e){}
-  if(!response.ok){
-    throw new Error(payload?.message||payload?.error||"Guild not found or API error.");
-  }
-  if(!payload) throw new Error("API returned an empty response.");
-  return payload;
-}
 
-form.addEventListener("submit",async e=>{
-  e.preventDefault();
-  const guildId=guildIdInput.value.trim();
-  const region=regionInput.value;
+  const url =
+    API_BASE +
+    "/api/guild?region=" +
+    encodeURIComponent(region) +
+    "&guildID=" +
+    encodeURIComponent(guildId);
 
-  if(!guildId){
-    setStatus("Please enter a Guild ID.","error");
-    guildIdInput.focus();return;
-  }
 
-  button.disabled=true;button.innerHTML="Searching…";
-  setStatus("Connecting to Render API…");
-  result.innerHTML=`<div class="card empty">Loading guild information…</div>`;
+  const controller = new AbortController();
+
+  const timeout = setTimeout(
+    () => controller.abort(),
+    20000
+  );
+
+
+  let response;
 
   try{
-    const data=await searchGuild(guildId,region);
-    renderGuild(data,guildId);
-    setStatus("Guild data loaded successfully.","ok");
-    result.scrollIntoView({behavior:"smooth",block:"start"});
-  }catch(err){
-    console.error(err);
-    result.innerHTML=`<div class="card empty">
-      <div style="font-size:34px;margin-bottom:10px">⚠️</div>
-      <div style="color:#fff;font-weight:850;margin-bottom:6px">Unable to load guild</div>
-      <div>${escapeHtml(err.message||"Something went wrong.")}</div>
-    </div>`;
-    setStatus("The API request failed. If Render is waking up, wait a few seconds and try again.","error");
+
+    response = await fetch(
+      url,
+      {
+        method:"GET",
+
+        headers:{
+          "Accept":"application/json"
+        },
+
+        cache:"no-store",
+
+        signal:controller.signal
+      }
+    );
+
+  }catch(error){
+
+    if(error.name === "AbortError"){
+
+      throw new Error(
+        "API request timed out. Please try again."
+      );
+
+    }
+
+    throw new Error(
+      "Could not connect to the Render backend."
+    );
+
   }finally{
-    button.disabled=false;button.innerHTML="Search Guild <span>→</span>";
+
+    clearTimeout(timeout);
+
   }
-});
+
+
+  const text = await response.text();
+
+  let payload = null;
+
+
+  try{
+
+    payload = text
+      ? JSON.parse(text)
+      : null;
+
+  }catch{
+
+    payload = {
+      raw:text
+    };
+
+  }
+
+
+  if(!response.ok){
+
+    const upstream =
+      payload?.details?.message ||
+      payload?.details?.error ||
+      payload?.error ||
+      `HTTP ${response.status}`;
+
+    throw new Error(upstream);
+
+  }
+
+
+  if(!payload){
+
+    throw new Error(
+      "API returned an empty response."
+    );
+
+  }
+
+
+  return payload;
+
+}
+
+
+/*
+  Search form.
+*/
+form.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    const guildId =
+      guildIdInput.value.trim();
+
+    const region =
+      regionInput.value;
+
+
+    if(!guildId){
+
+      setStatus(
+        "Please enter a Guild ID.",
+        "error"
+      );
+
+      guildIdInput.focus();
+
+      return;
+
+    }
+
+
+    /*
+      Basic validation.
+    */
+    if(!/^\d+$/.test(guildId)){
+
+      setStatus(
+        "Guild ID should contain numbers only.",
+        "error"
+      );
+
+      guildIdInput.focus();
+
+      return;
+
+    }
+
+
+    button.disabled = true;
+
+    button.innerHTML =
+      "Searching…";
+
+
+    setStatus(
+      "Connecting to Free Fire API…"
+    );
+
+
+    result.innerHTML = `
+      <div class="card empty">
+        Loading guild information…
+      </div>
+    `;
+
+
+    try{
+
+      const data =
+        await searchGuild(
+          guildId,
+          region
+        );
+
+
+      renderGuild(
+        data,
+        guildId
+      );
+
+
+      setStatus(
+        "Guild data loaded successfully.",
+        "ok"
+      );
+
+
+      result.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+
+    }catch(error){
+
+      console.error(
+        "Guild search error:",
+        error
+      );
+
+
+      result.innerHTML = `
+
+        <div class="card empty">
+
+          <div style="font-size:34px;margin-bottom:10px">
+            ⚠️
+          </div>
+
+          <div
+            style="
+              color:#fff;
+              font-weight:850;
+              margin-bottom:6px
+            "
+          >
+            Unable to load guild
+          </div>
+
+          <div>
+            ${escapeHtml(
+              error.message ||
+              "Something went wrong."
+            )}
+          </div>
+
+          <button
+            class="retry-btn"
+            onclick="document.getElementById('searchForm').requestSubmit()"
+          >
+            Try Again
+          </button>
+
+        </div>
+
+      `;
+
+
+      setStatus(
+        "The API request failed. Please try again in a few seconds.",
+        "error"
+      );
+
+
+    }finally{
+
+      button.disabled = false;
+
+      button.innerHTML =
+        "Search Guild <span>→</span>";
+
+    }
+
+  }
+);
+
+
+/*
+  Keep BD selected on startup.
+*/
+selectServer("BD");
+
 </script>
+
 </body>
 </html>
