@@ -8,9 +8,10 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
 
+// Current Free Fire API source
 const API_BASE =
   process.env.FFDATA_API_URL ||
-  "https://free-ff-api.vercel.app";
+  "https://free-ff-api-src-5plp.onrender.com";
 
 function cleanRegion(region) {
   const value = String(region || "BD").trim().toUpperCase();
@@ -42,7 +43,21 @@ app.get("/api/guild", async (req, res) => {
       "&guildID=" +
       encodeURIComponent(guildID);
 
-    const response = await fetch(url);
+    console.log("Requesting:", url);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json"
+      },
+      signal: controller.signal
+    });
+
+    clearTimeout(timeout);
+
     const text = await response.text();
 
     let data;
@@ -50,26 +65,35 @@ app.get("/api/guild", async (req, res) => {
     try {
       data = JSON.parse(text);
     } catch {
-      data = { raw: text };
+      data = {
+        raw: text
+      };
     }
 
     if (!response.ok) {
-      return res.status(response.status).json({
+      return res.status(502).json({
         error: "Upstream Free Fire API error",
+        upstreamStatus: response.status,
         details: data
       });
     }
 
     return res.json({
       source: "free-ff-api",
-      region: region,
-      guildID: guildID,
-      data: data
+      region,
+      guildID,
+      data
     });
+
   } catch (error) {
+    console.error("Guild API error:", error);
+
     return res.status(502).json({
       error: "Could not reach the upstream Free Fire API",
-      details: error.message
+      details:
+        error.name === "AbortError"
+          ? "Free Fire API request timed out."
+          : error.message
     });
   }
 });
